@@ -1,11 +1,12 @@
 ﻿using Xems.Domain.Entities;
 using Xems.Domain.Enums;
+using Xems.Domain.ValueObjects;
 
 namespace Xems.Application.Services
 {
 	public class ElevatorDispatcher : IElevatorDispatcher
 	{
-		public Elevator? SelectElevator(IEnumerable<Elevator> elevators, ElevatorRequest request)
+		public Elevator? SelectElevator(List<Elevator> elevators, ElevatorRequest request)
 		{
 			return elevators
 					.Where(elevator => elevator.IsAvailable) // fjerner heiser som er i Maintenance eller OutOfService
@@ -13,6 +14,7 @@ namespace Xems.Application.Services
 					.FirstOrDefault();
 		}
 
+		#region Beregn kostnad
 		private static int CalculateCost(Elevator elevator, ElevatorRequest request)
 		{
 			var distanceCost = Math.Abs(elevator.CurrentFloor.Value - request.FromFloor.Value);
@@ -24,6 +26,8 @@ namespace Xems.Application.Services
 		{
 			if (elevator.State == ElevatorState.Idle)
 				return 0;
+			if (elevator.State == ElevatorState.DoorsOpen)
+				return 1;
 
 			if (elevator.Direction == request.Direction && IsMovingTowardsRequestFloor(elevator, request))
 				return -2;
@@ -33,13 +37,55 @@ namespace Xems.Application.Services
 
 		private static bool IsMovingTowardsRequestFloor(Elevator elevator, ElevatorRequest request)
 		{
-			if (elevator.Direction == Direction.Up)
+			if (elevator.Direction == ElevatorDirection.Up)
 				return elevator.CurrentFloor.Value <= request.FromFloor.Value;
 
-			if (elevator.Direction == Direction.Down)
+			if (elevator.Direction == ElevatorDirection.Down)
 				return elevator.CurrentFloor.Value >= request.FromFloor.Value;
 
 			return false;
 		}
+		#endregion
+
+		#region Lobbypreferanse
+
+		private const int LobbyFloor = 0;
+		private const int RequiredLobbyElevators = 4;
+		private bool CanReturnToLobby(Elevator elevator)
+		{
+			return elevator.IsAvailable
+					&& elevator.State == ElevatorState.Idle
+					&& elevator.CurrentFloor.Value != LobbyFloor;
+		}
+
+		public void ApplyLobbyPreference(List<Elevator> elevators)
+		{
+			var lobbyCount = 0;
+
+			foreach (var elevator in elevators)
+			{
+				var isInLobby = elevator.CurrentFloor.Value == LobbyFloor;
+				var isIdle = elevator.State == ElevatorState.Idle;
+
+				if (elevator.IsAvailable && isInLobby && isIdle)
+				{
+					lobbyCount++;
+				}
+			}
+
+			if (lobbyCount >= RequiredLobbyElevators)
+				return;
+
+			var candidates = elevators
+					.Where(CanReturnToLobby)
+					.OrderBy(e => Math.Abs(e.CurrentFloor.Value - LobbyFloor))
+					.Take(RequiredLobbyElevators - lobbyCount);
+
+			foreach (var elevator in candidates)
+				elevator.SendToFloor(new Floor(LobbyFloor));
+		}
+
+		#endregion
+
 	}
 }

@@ -7,9 +7,9 @@ namespace Xems.Domain.Entities
 	{
 		public Floor FromFloor { get; }
 
-		public Direction Direction { get; }
+		public ElevatorDirection Direction { get; }
 
-		public ElevatorRequest(Floor fromFloor, Direction direction)
+		public ElevatorRequest(Floor fromFloor, ElevatorDirection direction)
 		{
 			FromFloor = fromFloor;
 			Direction = direction;

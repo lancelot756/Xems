@@ -1,6 +1,6 @@
 ﻿namespace Xems.Domain.Enums
 {
-	public enum Direction
+	public enum ElevatorDirection
 	{
 		Up,
 		Down

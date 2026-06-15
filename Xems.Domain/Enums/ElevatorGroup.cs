@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Xems.Domain.Enums
 {
-	public enum ElevatorGroup
+	public enum ElevatorGroup 
 	{
+		A,
+		B
 	}
 }
