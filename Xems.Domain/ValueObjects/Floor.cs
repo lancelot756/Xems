@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Xems.Domain.ValueObjects
+﻿namespace Xems.Domain.ValueObjects
 {
 	public class Floor
 	{
+		public int Value { get; }
+
+		public Floor(int value)
+		{
+			Value = value;
+		}
 	}
 }
