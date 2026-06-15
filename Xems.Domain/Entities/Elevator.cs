@@ -1,5 +1,6 @@
 ﻿using Xems.Domain.Enums;
 using Xems.Domain.ValueObjects;
+using Xems.Domain.Exceptions;
 
 namespace Xems.Domain.Entities
 {
@@ -28,7 +29,8 @@ namespace Xems.Domain.Entities
 		public void SendToFloor(Floor floor)
 		{
 			if (!IsAvailable)
-				throw new InvalidOperationException("Elevator is not available.");
+				throw new InvalidElevatorStateTransitionException(
+					$"Elevator {Id} cannot be sent to a floor while state is {State}.");
 
 			TargetFloor = floor;
 

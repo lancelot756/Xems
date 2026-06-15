@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Xems.Domain.Exceptions;
 
-namespace Xems.Domain.Exceptions
+public class InvalidElevatorStateTransitionException : Exception
 {
-    internal class InvalidElevatorStateTransitionException
-    {
-    }
+	public InvalidElevatorStateTransitionException(string message) : base(message)
+	{
+	}
 }
