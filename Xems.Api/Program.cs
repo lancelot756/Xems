@@ -46,7 +46,7 @@ namespace Xems.Api
 		});
 			});
 
-			builder.Services.AddSingleton<ElevatorDispatcher>();
+			builder.Services.AddSingleton<IElevatorDispatcher, ElevatorDispatcher>();
 			builder.Services.AddSingleton<ElevatorService>();
 
 			var jwtSection = builder.Configuration.GetSection("Jwt");

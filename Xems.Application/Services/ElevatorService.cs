@@ -6,7 +6,7 @@ namespace Xems.Application.Services;
 
 public class ElevatorService
 {
-	private readonly ElevatorDispatcher _dispatcher;
+	private readonly IElevatorDispatcher _dispatcher;
 
 	private readonly List<Elevator> _elevators =
 	[
@@ -20,7 +20,7 @@ public class ElevatorService
 			new("B4", ElevatorGroup.B, new Floor(0))
 	];
 
-	public ElevatorService(ElevatorDispatcher dispatcher)
+	public ElevatorService(IElevatorDispatcher dispatcher)
 	{
 		_dispatcher = dispatcher;
 	}
