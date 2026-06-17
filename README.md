@@ -21,7 +21,7 @@ Oppgavebeskrivelsen foreslo et Infrastructure-lag, og det ville vært naturlig �
 
 Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use cases og DTO'er, men jeg valgte å holde implementasjonen enklere fordi jeg hadde begrenset med tid. Use casene er i praksis implementert som metoder i ElevatorService, og DTO'ene ligger i Models-mappen i Api-laget fordi de nå kun brukes som modeller for HTTP-endepunktene. I et reelt produksjonsscenario ville det vært naturlig å ha applikasjonskontrakter i Application-laget og mæppe mellom Application-DTO'er og HTTP-modeller i Api-laget.
 
-I en liten løsning som dette er det ikke nødvendig med noen interfaces, men jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent.
+I en liten kodebase som dette er det ikke nødvendig med noen interfaces, men jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent. I et produksjonsscenario kunne det blitt aktuelt å bytte den ut.
 
 
 # Dispatcheralgoritme
