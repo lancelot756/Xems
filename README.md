@@ -1,9 +1,9 @@
-### Kjøreinstruksjoner
+# Kjøreinstruksjoner
 
 Åpne løsningen i Visual Studio 2022 eller nyere og start applikasjonen med F5 eller Ctrl+F5. Swagger åpnes automatisk ved oppstart.
 For endepunkter som krever autentisering må det først hentes et JWT-token via /auth/token, som deretter legges inn ved å klikke Authorize i Swagger.
 
-# Testbrukere
+### Testbrukere
 
 Admin:
 admin / admin123
@@ -15,7 +15,7 @@ Guest:
 guest / guest123
 
 
-### Arkitekturvalg
+# Arkitekturvalg
 
 Oppgavebeskrivelsen foreslo et Infrastructure-lag, og det ville vært naturlig å ha dette hvis jeg hadde implementert en database. Men siden jeg valgte in-memory persistens av tidshensyn, finnes ikke noe Infrastructure-lag i denne løsningen. I et oppdrag for en reell kunde ville persistensansvaret blitt flyttet til et eget Infrastructure-lag der databaseintegrasjonen hadde blitt implementert, mens Application-laget kun ville kjent til nødvendige kontrakter for å hente og lagre data. Dette ville gitt en tydeligere separasjon mellom applikasjonslogikk og tekniske detaljer knyttet til persistens. Men for denne case-oppgaven vurderte jeg at den ekstra kompleksiteten ikke ga tilstrekkelig verdi sammenlignet med en enklere in-memory løsning.
 
@@ -24,7 +24,7 @@ Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use case
 I denne case-oppgaven er det ikke strengt nødvendig med interface hverken for ElevatorDispatcher eller ElevatorService. Jeg valgte likevel interface på dispatcheren fordi algoritmen er oppgavens mest sentrale og mest naturlig utskiftbare komponent. ElevatorService har foreløbig bare én konkret rolle som applikasjonstjeneste, så jeg lot være å abstrahere den for å unngå unødvendig kompleksitet.
 
 
-### Dispatchalgoritme
+# Dispatchalgoritme
 
 Når systemet mottar en heisforespørsel, filtreres først heiser som er i tilstanden Maintenance eller OutOfService bort. For de tilgjengelige heisene beregnes deretter en kostnad basert på følgende enkle prinsipper:
 * Avstanden mellom heisen og forespørselsetasjen gir en kostnad på 1 per etasje. 
@@ -38,7 +38,7 @@ Med mer tid ville det vært opplagt å fokusere på forbedring av algoritmen. Fo
 * Analysere trafikkmønstre og bruke dette til å plassere heiser proaktivt der etterspørselen forventes å oppstå.
 
 
-# Lobbypreferanse
+### Lobbypreferanse
 
 For å oppfylle kravet om at minimum 4 heiser skal stå klare i lobbyen ved lav aktivitet, teller systemet hvor mange Idle heiser som befinner seg i lobbyetasjen. 
 * Hvis 4 eller flere heiser i tilstanden Idle allerede står i lobbyen, gjøres ingenting. 
