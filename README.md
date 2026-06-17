@@ -46,4 +46,4 @@ For å oppfylle kravet om at minimum 4 heiser skal stå klare i lobbyen ved lav 
 
 Med mer tid kunne også lobbylogikken blitt forbedret. Slik den er implementert nå, kan det i perioder med svært lav aktivitet oppstå situasjoner der alle heisene ender opp som Idle i lobbyen. Mulige forbedringer:
 * Sikre at hvis 8 heiser er Idle, står minst to av dem i andre etasjer enn lobbyen.
-* Ta høyde for at heisbehovet varierer gjennom døgnet. I visse tidsrom om morgenen bør heisene for eksempel stå klare til å frakte gjestene fra rommene og ned til lobbyen eller etasjen der frokosten serveres. Her også kunne trafikkmønstre blitt analysert og brukt til å plassere heisene mer proaktivt der etterspørselen forventes å oppstå.
+* Ta høyde for at heisbehovet varierer gjennom døgnet. I visse tidsrom om morgenen bør heisene for eksempel stå klare til å frakte gjestene fra rommene og ned til lobbyen eller etasjen der frokosten serveres. Her også kunne trafikkmønstre blitt analysert og brukt til å plassere heisene mer proaktivt der det forventes at de trengs mest.
