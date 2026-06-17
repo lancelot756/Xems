@@ -58,7 +58,7 @@ namespace Xems.Application.Services
 
 		public void ApplyLobbyPreference(List<Elevator> elevators)
 		{
-			// Tell hvor mange heiser som allerede er i lobbyen
+			// Tell hvor mange Idle heiser som allerede er i lobbyen
 			var lobbyCount = 0;
 			foreach (var elevator in elevators)
 			{
@@ -68,7 +68,7 @@ namespace Xems.Application.Services
 					lobbyCount++;
 			}
 
-			// Hvis 4 heiser allerede er i lobbyen, gjør ingenting
+			// Hvis minst 4 Idle heiser allerede er i lobbyen, gjør ingenting
 			if (lobbyCount >= RequiredLobbyElevators)
 				return;
 
