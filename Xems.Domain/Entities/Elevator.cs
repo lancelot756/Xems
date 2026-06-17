@@ -9,7 +9,7 @@ namespace Xems.Domain.Entities
 		public string Id { get; private set; }
 
 		public ElevatorGroup Group { get; private set; }
-		public ElevatorState State { get; private set; }
+		public ElevatorState State { get; set; }
 		public ElevatorDirection? Direction { get; private set; }
 		public Floor? TargetFloor { get; private set; }
 		public Floor CurrentFloor { get; private set; }
@@ -20,10 +20,10 @@ namespace Xems.Domain.Entities
 		{
 			Id = id;
 			Group = group;
+			CurrentFloor = currentFloor;
 			State = ElevatorState.Idle;
 			Direction = null;
 			TargetFloor = null;
-			CurrentFloor = currentFloor;
 		}
 
 		public void SendToFloor(Floor floor)
@@ -36,8 +36,9 @@ namespace Xems.Domain.Entities
 
 			if (floor.Value == CurrentFloor.Value)
 			{
-				State = ElevatorState.Idle;
+				State = ElevatorState.DoorsOpen;
 				Direction = null;
+				TargetFloor = null;
 				return;
 			}
 
@@ -48,6 +49,26 @@ namespace Xems.Domain.Entities
 			State = Direction == Enums.ElevatorDirection.Up
 					? ElevatorState.MovingUp
 					: ElevatorState.MovingDown;
+		}
+
+		public void OpenDoors()
+		{
+			if (State is ElevatorState.Maintenance or ElevatorState.OutOfService)
+				throw new InvalidElevatorStateTransitionException(
+						$"Elevator {Id} cannot open doors while state is {State}.");
+
+			State = ElevatorState.DoorsOpen;
+			Direction = null;
+			TargetFloor = null;
+		}
+
+		public void CloseDoors()
+		{
+			if (State != ElevatorState.DoorsOpen)
+				throw new InvalidElevatorStateTransitionException(
+						$"Elevator {Id} cannot close doors while state is {State}.");
+
+			State = ElevatorState.Idle;
 		}
 
 		public void EnterMaintenanceMode()

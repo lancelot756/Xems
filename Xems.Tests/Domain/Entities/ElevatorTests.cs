@@ -31,13 +31,13 @@ public class ElevatorTests
 	}
 
 	[Fact]
-	public void SendToFloor_WhenElevatorIsInMaintenance_ShouldThrowException()
-	{
+	public void Elevator_ShouldRejectTransitionFromMaintenanceToMovingUp() 
+	{ 
 		var elevator = new Elevator("A1", ElevatorGroup.A, new Floor(0));
 		elevator.EnterMaintenanceMode();
 
-		Assert.Throws<InvalidElevatorStateTransitionException>(() =>
-				elevator.SendToFloor(new Floor(5)));
+		var attemptToMoveElevator = () => elevator.SendToFloor(new Floor(5));
+		Assert.Throws<InvalidElevatorStateTransitionException>(attemptToMoveElevator);
 	}
 
 	[Fact]

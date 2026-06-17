@@ -29,51 +29,38 @@ public class ElevatorDispatcherTests
 	}
 
 	[Fact]
-	public void SelectElevator_WhenElevatorIsMovingTowardsRequest_ShouldPreferThatElevator()
+	public void SelectElevator_WhenElevatorIsMovingTowardsRequest_ShouldBePreferredToIdle()
 	{
 		var request = new ElevatorRequest(new Floor(6), ElevatorDirection.Up);
 
-		var movingElevator = new Elevator("A1", ElevatorGroup.A, new Floor(4));
-		movingElevator.SendToFloor(new Floor(10));
-
 		var idleElevator = new Elevator("A2", ElevatorGroup.A, new Floor(9));
+		var movingElevator = new Elevator("A1", ElevatorGroup.A, new Floor(4));
+		movingElevator.State = ElevatorState.MovingUp;
+		var elevators = new List<Elevator> { idleElevator, movingElevator };
 
-		var elevators = new List<Elevator>
-				{
-						movingElevator,
-						idleElevator
-				};
-
+		movingElevator.SendToFloor(new Floor(10));
 		var selectedElevator = _dispatcher.SelectElevator(elevators, request);
-
 		selectedElevator.Should().Be(movingElevator);
 	}
 
 	[Fact]
-	public void SelectElevator_WhenElevatorIsInMaintenance_ShouldNotSelectIt()
+	public void SelectElevator_WhenElevatorIsInMaintenance_ShouldNotBeSelected()
 	{
 		var request = new ElevatorRequest(new Floor(5), ElevatorDirection.Up);
 
 		var maintenanceElevator = new Elevator("A1", ElevatorGroup.A, new Floor(5));
 		maintenanceElevator.EnterMaintenanceMode();
-
 		var availableElevator = new Elevator("A2", ElevatorGroup.A, new Floor(8));
-
-		var elevators = new List<Elevator>
-				{
-						maintenanceElevator,
-						availableElevator
-				};
+		var elevators = new List<Elevator> { maintenanceElevator, availableElevator };
 
 		var selectedElevator = _dispatcher.SelectElevator(elevators, request);
-
 		selectedElevator.Should().Be(availableElevator);
 	}
 
 	[Fact]
-	public void ApplyLobbyPreference_WhenFewerThanFourElevatorsAreInLobby_ShouldSendNearestIdleElevatorsToLobby()
+	public void ApplyLobbyPreference_WhenFewerThanFourIdleElevatorsAreInLobby_ShouldSendNearestIdleElevatorsToLobby()
 	{
-		var elevators = new List<Elevator>
+		var fiveIdleElevators = new List<Elevator>
 				{
 						new("A1", ElevatorGroup.A, new Floor(0)),
 						new("A2", ElevatorGroup.A, new Floor(0)),
@@ -82,18 +69,17 @@ public class ElevatorDispatcherTests
 						new("B1", ElevatorGroup.B, new Floor(12))
 				};
 
-		_dispatcher.ApplyLobbyPreference(elevators);
+		_dispatcher.ApplyLobbyPreference(fiveIdleElevators);
 
-		elevators.Single(e => e.Id == "A3").TargetFloor!.Value.Should().Be(0);
-		elevators.Single(e => e.Id == "A4").TargetFloor!.Value.Should().Be(0);
-
-		elevators.Single(e => e.Id == "B1").TargetFloor.Should().BeNull();
+		fiveIdleElevators.Single(e => e.Id == "A3").TargetFloor!.Value.Should().Be(0);
+		fiveIdleElevators.Single(e => e.Id == "A4").TargetFloor!.Value.Should().Be(0);
+		fiveIdleElevators.Single(e => e.Id == "B1").TargetFloor.Should().BeNull();
 	}
 
 	[Fact]
-	public void ApplyLobbyPreference_WhenFourElevatorsAreAlreadyInLobby_ShouldNotSendMoreElevatorsToLobby()
+	public void ApplyLobbyPreference_WhenFourIdleElevatorsAreAlreadyInLobby_ShouldNotSendMoreElevatorsToLobby()
 	{
-		var elevators = new List<Elevator>
+		var fiveIdleElevators = new List<Elevator>
 				{
 						new("A1", ElevatorGroup.A, new Floor(0)),
 						new("A2", ElevatorGroup.A, new Floor(0)),
@@ -102,9 +88,9 @@ public class ElevatorDispatcherTests
 						new("B1", ElevatorGroup.B, new Floor(7))
 				};
 
-		_dispatcher.ApplyLobbyPreference(elevators);
+		_dispatcher.ApplyLobbyPreference(fiveIdleElevators);
 
-		elevators.Single(e => e.Id == "B1").TargetFloor.Should().BeNull();
-		elevators.Single(e => e.Id == "B1").State.Should().Be(ElevatorState.Idle);
+		fiveIdleElevators.Single(e => e.Id == "B1").TargetFloor.Should().BeNull();
+		fiveIdleElevators.Single(e => e.Id == "B1").State.Should().Be(ElevatorState.Idle);
 	}
 }

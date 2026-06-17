@@ -10,9 +10,7 @@
 		public Floor(int value)
 		{
 			if (value < MinValue || value > MaxValue)
-			{
 				throw new ArgumentOutOfRangeException(nameof(value), $"Floor must be between {MinValue} and {MaxValue}.");
-			}
 
 			Value = value;
 		}

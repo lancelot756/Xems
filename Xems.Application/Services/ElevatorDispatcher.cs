@@ -47,10 +47,10 @@ namespace Xems.Application.Services
 		}
 		#endregion
 
-		#region Lobbypreferanse
+		#region Lobby preference
 
 		private const int LobbyFloor = 0;
-		private const int RequiredLobbyElevators = 4;
+		private const int RequiredLobbyElevators = 4; 
 		private bool CanReturnToLobby(Elevator elevator)
 		{
 			return elevator.IsAvailable
@@ -60,22 +60,21 @@ namespace Xems.Application.Services
 
 		public void ApplyLobbyPreference(List<Elevator> elevators)
 		{
+			// Tell hvor mange heiser som allerede er i lobbyen
 			var lobbyCount = 0;
-
 			foreach (var elevator in elevators)
 			{
 				var isInLobby = elevator.CurrentFloor.Value == LobbyFloor;
 				var isIdle = elevator.State == ElevatorState.Idle;
-
 				if (elevator.IsAvailable && isInLobby && isIdle)
-				{
 					lobbyCount++;
-				}
 			}
 
+			// Hvis 4 heiser allerede er i lobbyen, gjør ingenting
 			if (lobbyCount >= RequiredLobbyElevators)
 				return;
 
+			// Ta de nærmeste, maks 4
 			var candidates = elevators
 					.Where(CanReturnToLobby)
 					.OrderBy(e => Math.Abs(e.CurrentFloor.Value - LobbyFloor))
