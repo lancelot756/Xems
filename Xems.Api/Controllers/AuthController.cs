@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Xems.Api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Xems.Api.Controllers;
 
@@ -21,6 +22,7 @@ public class AuthController : ControllerBase
 	[HttpPost("token")]
 	public IActionResult CreateToken(LoginRequestDto request)
 	{
+		var hasher = new PasswordHasher<string>();
 		var role = GetRole(request.Username, request.Password);
 
 		if (role is null)
@@ -37,16 +39,23 @@ public class AuthController : ControllerBase
 
 	private static string? GetRole(string username, string password)
 	{
-		if (username == "admin" && password == "admin123")
-			return "Admin";
+		var passwordHasher = new PasswordHasher<string>();
 
-		if (username == "operator" && password == "operator123")
-			return "Operator";
+		var users = new Dictionary<string, (string Role, string PasswordHash)>
+		{
+			["admin"] = ("Admin", "AQAAAAIAAYagAAAAEEuxmYfGSohGvUZ6Ai0iZaMdboHt6DZ5OkkG/UjfI+ylThlyf4oZPy7S4kOz+Zmwsw=="),
+			["operator"] = ("Operator", "AQAAAAIAAYagAAAAEL92iMumkwzrhLvpQVDlJFpp1N782ul+Dsf/Eq0p3WAoLml2sN2gsaenf4jFerKwGA=="),
+			["guest"] = ("Guest", "AQAAAAIAAYagAAAAEKZhrT+ruNcwnPhBBw1EgIDF0QtUClFHLfmBkYzOjszQygParvnkXIsfvTnUyF/iWg==")
+		};
 
-		if (username == "guest" && password == "guest123")
-			return "Guest";
+		if (!users.TryGetValue(username, out var user))
+			return null;
 
-		return null;
+		var result = passwordHasher.VerifyHashedPassword(username, user.PasswordHash, password);
+
+		return result == PasswordVerificationResult.Success
+				? user.Role
+				: null;
 	}
 
 	private string GenerateToken(string username, string role)
