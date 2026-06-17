@@ -5,9 +5,12 @@
 
 ### Testbrukere
 
-Admin: admin / admin123
-Operator: operator / operator123
-Guest: guest / guest123
+Admin: 
+admin / admin123
+Operator: 
+operator / operator123
+Guest: 
+guest / guest123
 
 
 # Arkitekturvalg
