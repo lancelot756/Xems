@@ -17,11 +17,11 @@ guest / guest123
 
 # Arkitekturvalg
 
-Oppgavebeskrivelsen foreslo et Infrastructure-lag, og det ville vært naturlig å ha dette hvis jeg hadde implementert en database. Men siden jeg valgte in-memory persistens av tidshensyn, finnes ikke noe Infrastructure-lag i denne løsningen. I et oppdrag for en reell kunde ville persistensansvaret blitt flyttet til et eget Infrastructure-lag der databaseintegrasjonen hadde blitt implementert, mens Application-laget kun ville kjent til nødvendige kontrakter for å hente og lagre data. Dette ville gitt en tydeligere separasjon mellom applikasjonslogikk og tekniske detaljer knyttet til persistens. Men for denne case-oppgaven vurderte jeg at den ekstra kompleksiteten ikke ga tilstrekkelig verdi sammenlignet med en enklere in-memory løsning.
+Oppgavebeskrivelsen foreslo et Infrastructure-lag, og det ville vært naturlig å ha dette hvis jeg hadde implementert en database. Men siden jeg valgte in-memory persistens av tidshensyn, finnes ikke noe Infrastructure-lag i denne løsningen. I et oppdrag for en reell kunde ville persistensansvaret blitt flyttet til et Infrastructure-lag og Application-laget ville kun kjent til nødvendige kontrakter for å hente og lagre data, noe som ville gitt en tydeligere separasjon mellom applikasjons- og persistenslogikk. Men for denne case-oppgaven vurderte jeg at den ekstra kompleksiteten var unødvendig.
 
 Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use cases og DTO'er, men jeg valgte å holde implementasjonen enklere fordi jeg hadde begrenset med tid. Use casene er i praksis implementert som metoder i ElevatorService, og DTO'ene ligger i Models-mappen i Api-laget fordi de nå kun brukes som modeller for HTTP-endepunktene. I et reelt produksjonsscenario ville det vært naturlig å ha applikasjonskontraker i Application-laget og mæppe mellom Application-DTO'er og HTTP-modeller i Api-laget.
 
-I denne case-oppgaven er det ikke strengt nødvendig med interface hverken for ElevatorDispatcher eller ElevatorService. Jeg valgte likevel interface på dispatcheren fordi algoritmen er oppgavens mest sentrale og mest naturlig utskiftbare komponent. ElevatorService har foreløbig bare én konkret rolle som applikasjonstjeneste, så jeg lot være å abstrahere den for å unngå unødvendig kompleksitet.
+I en liten løsning som dette er det ikke nødvendig med noen interfaces. Jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent.
 
 
 # Dispatchalgoritme
@@ -35,7 +35,7 @@ Når systemet mottar en heisforespørsel, filtreres først heiser som er i tilst
 Med mer tid ville det vært opplagt å fokusere på forbedring av algoritmen. Forbedringer kunne vært:
 * Skille mellom heiser som er på vei for å betjene en aktiv forespørsel og heiser som kun flyttes automatisk tilbake til lobbyen.
 * Ta hensyn til antall planlagte stopp på veien til forespørselen.
-* Analysere trafikkmønstre og bruke dette til å plassere heiser proaktivt der etterspørselen forventes å oppstå.
+* Analysere trafikkmønstre fra hendelsesloggen og bruke dette til å plassere heiser proaktivt der etterspørselen forventes å oppstå.
 
 
 ### Lobbypreferanse
