@@ -50,12 +50,10 @@ namespace Xems.Application.Services
 		#region Lobby preference
 
 		private const int LobbyFloor = 0;
-		private const int RequiredLobbyElevators = 4; 
+		private const int RequiredLobbyElevators = 4;
 		private bool CanReturnToLobby(Elevator elevator)
 		{
-			return elevator.IsAvailable
-					&& elevator.State == ElevatorState.Idle
-					&& elevator.CurrentFloor.Value != LobbyFloor;
+			return elevator.State == ElevatorState.Idle && elevator.CurrentFloor.Value != LobbyFloor;
 		}
 
 		public void ApplyLobbyPreference(List<Elevator> elevators)
@@ -66,7 +64,7 @@ namespace Xems.Application.Services
 			{
 				var isInLobby = elevator.CurrentFloor.Value == LobbyFloor;
 				var isIdle = elevator.State == ElevatorState.Idle;
-				if (elevator.IsAvailable && isInLobby && isIdle)
+				if (isInLobby && isIdle)
 					lobbyCount++;
 			}
 
