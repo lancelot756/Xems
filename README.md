@@ -1,6 +1,6 @@
 # Kjøreinstruksjoner
 
-* Åpne løsningen i Visual Studio 2022 eller nyere og start applikasjonen med F5 eller Ctrl+F5. Swagger åpnes automatisk ved oppstart.
+* Åpne løsningen i Visual Studio og start applikasjonen med F5 eller Ctrl+F5. Swagger åpnes automatisk ved oppstart.
 * For endepunkter som krever autentisering må det først hentes et JWT-token via /auth/token, som deretter legges inn ved å klikke Authorize i Swagger.
 
 ### Testbrukere
