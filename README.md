@@ -24,7 +24,7 @@ Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use case
 I en liten løsning som dette er det ikke nødvendig med noen interfaces. Jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent.
 
 
-# Dispatchalgoritme
+# Dispatcheralgoritme
 
 Når systemet mottar en heisforespørsel, filtreres først heiser som er i tilstanden Maintenance eller OutOfService bort. For de tilgjengelige heisene beregnes deretter en kostnad basert på følgende enkle prinsipper:
 * Avstanden mellom heisen og forespørselsetasjen gir en kostnad på 1 per etasje. 
