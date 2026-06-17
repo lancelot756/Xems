@@ -19,9 +19,9 @@ guest / guest123
 
 Oppgavebeskrivelsen foreslo et Infrastructure-lag, og det ville vært naturlig å ha dette hvis jeg hadde implementert en database. Men siden jeg valgte in-memory persistens av tidshensyn, finnes ikke noe Infrastructure-lag i denne løsningen. I et oppdrag for en reell kunde ville persistensansvaret blitt flyttet til et Infrastructure-lag og Application-laget ville kun kjent til nødvendige kontrakter for å hente og lagre data, noe som ville gitt en tydeligere separasjon mellom applikasjons- og persistenslogikk. Men for denne case-oppgaven vurderte jeg at den ekstra kompleksiteten var unødvendig.
 
-Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use cases og DTO'er, men jeg valgte å holde implementasjonen enklere fordi jeg hadde begrenset med tid. Use casene er i praksis implementert som metoder i ElevatorService, og DTO'ene ligger i Models-mappen i Api-laget fordi de nå kun brukes som modeller for HTTP-endepunktene. I et reelt produksjonsscenario ville det vært naturlig å ha applikasjonskontraker i Application-laget og mæppe mellom Application-DTO'er og HTTP-modeller i Api-laget.
+Oppgavebeskrivelsen foreslo også at Application-laget skulle inneholde use cases og DTO'er, men jeg valgte å holde implementasjonen enklere fordi jeg hadde begrenset med tid. Use casene er i praksis implementert som metoder i ElevatorService, og DTO'ene ligger i Models-mappen i Api-laget fordi de nå kun brukes som modeller for HTTP-endepunktene. I et reelt produksjonsscenario ville det vært naturlig å ha applikasjonskontrakter i Application-laget og mæppe mellom Application-DTO'er og HTTP-modeller i Api-laget.
 
-I en liten løsning som dette er det ikke nødvendig med noen interfaces. Jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent.
+I en liten løsning som dette er det ikke nødvendig med noen interfaces, men jeg valgte likevel å abstrahere ElevatorDispatcher fordi dispatcheralgoritmen er løsningens mest sentrale og derfor mest naturlig utskiftbare komponent.
 
 
 # Dispatcheralgoritme
@@ -47,3 +47,8 @@ For å oppfylle kravet om at minimum 4 heiser skal stå klare i lobbyen ved lav 
 Med mer tid kunne også lobbylogikken blitt forbedret. Slik den er implementert nå, kan det i perioder med svært lav aktivitet oppstå situasjoner der alle heisene ender opp som Idle i lobbyen. Mulige forbedringer:
 * Sikre at hvis 8 heiser er Idle, står minst to av dem i andre etasjer enn lobbyen.
 * Ta høyde for at heisbehovet varierer gjennom døgnet. I visse tidsrom om morgenen bør heisene for eksempel stå klare til å frakte gjestene fra rommene og ned til lobbyen eller etasjen der frokosten serveres. Her også kunne trafikkmønstre blitt analysert og brukt til å plassere heisene mer proaktivt der det forventes at de trengs mest.
+
+
+# Etasjenummerering
+
+Dette er modellert ved hjelp av konstanter i ValueObject'et Floor. Med mer tid ville jeg gjort dette konfigurerbart og ikke hardkodet det inn i Floor-klassen.
