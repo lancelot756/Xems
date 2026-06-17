@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Xems.Application\Xems.Application.csproj" />
-    <ProjectReference Include="..\Xems.Infrastructure\Xems.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
