@@ -7,7 +7,7 @@ namespace Xems.Api.Models;
 public class ElevatorRequestDto
 {
 	[Required]
-	[Range(Floor.MinValue, Floor.MaxValue, ErrorMessage = "Floor must be between -2 and 12.")]
+	[Range(Floor.MinValue, Floor.MaxValue, ErrorMessage = "Invalid floor number.")]
 	public int? FromFloor { get; set; }
 
 	[Required(ErrorMessage = "Direction is required.")]

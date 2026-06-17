@@ -16,9 +16,4 @@
     <ProjectReference Include="..\Xems.Infrastructure\Xems.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authentication\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>
